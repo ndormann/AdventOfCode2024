@@ -1,0 +1,2 @@
+Puzzle input goes here. Save the input for Puzzle X as inputX.txt
+e.g. input1.txt

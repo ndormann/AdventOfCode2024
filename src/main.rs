@@ -28,7 +28,7 @@ mod puzzle7;
 mod puzzle8;
 mod puzzle9;
 
-fn main() {
+fn get_all_puzzles() -> Vec<Box<dyn Aoc2024>> {
     let mut puzzles: Vec<Box<dyn Aoc2024>> = Vec::new();
     puzzles.push(Box::new(puzzle1::Puzzle1 {}));
     puzzles.push(Box::new(puzzle2::Puzzle2 {}));
@@ -52,18 +52,37 @@ fn main() {
     puzzles.push(Box::new(puzzle20::Puzzle20 {}));
     puzzles.push(Box::new(puzzle21::Puzzle21 {}));
     puzzles.push(Box::new(puzzle22::Puzzle22 {}));
+    puzzles.push(Box::new(puzzle23::Puzzle23 {}));
+    puzzles.push(Box::new(puzzle24::Puzzle24 {}));
+    puzzles.push(Box::new(puzzle25::Puzzle25 {}));
+    puzzles
+}
 
+fn run_puzzle(content: String, puzzle: &Box<dyn Aoc2024>) {
+    println!("{}", puzzle.name());
+    let start = Instant::now();
+    let res_a = puzzle.solve_a(&content);
+    let duration = Instant::now() - start;
+    println!("Part a: {} took {:?}", res_a, duration);
+    let start = Instant::now();
+    let res_b = puzzle.solve_b(&content);
+    let duration = Instant::now() - start;
+    println!("Part b: {} took {:?}", res_b, duration);
+    println!();
+}
+
+fn main() {
+    let puzzles = get_all_puzzles();
+
+    // execute last puzzle for development
+    let content = read_day(puzzles.len() as u8);
+    run_puzzle(content, puzzles.last().unwrap());
+
+    let start = Instant::now();
     for (day, puzzle) in puzzles.iter().enumerate() {
         let content = read_day((day + 1) as u8);
-        println!("{}", puzzle.name());
-        let start = Instant::now();
-        let res_a = puzzle.solve_a(&content);
-        let duration = Instant::now() - start;
-        println!("Part a: {} took {:?}", res_a, duration);
-        let start = Instant::now();
-        let res_b = puzzle.solve_b(&content);
-        let duration = Instant::now() - start;
-        println!("Part b: {} took {:?}", res_b, duration);
-        println!();
+        run_puzzle(content, puzzle);
     }
+    let duration = Instant::now() - start;
+    println!("Took {:?}", duration);
 }
